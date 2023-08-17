@@ -9,6 +9,9 @@
  * @package    Wp_Mailchimp_Sync
  * @subpackage Wp_Mailchimp_Sync/admin
  */
+ 
+// Include the WPMailchimpSync class
+include_once(plugin_dir_path(__FILE__) . 'wp-mailchimp-sync.php');
 
 /**
  * The admin-specific functionality of the plugin.
@@ -16,6 +19,7 @@
  * @package    Wp_Mailchimp_Sync
  * @subpackage Wp_Mailchimp_Sync/admin
  * @author     Javier Damián Mendoza <jdamian.m86@gmail.com>
+ * 
  */
 class Wp_Mailchimp_Sync_Admin {
 
@@ -49,6 +53,9 @@ class Wp_Mailchimp_Sync_Admin {
 		$this->wp_mailchimp_sync = $wp_mailchimp_sync;
 		$this->version = $version;
 		$this->options = get_option('data_settings_wp_mailchimp_sync');
+		
+	    // Add the following lines to instantiate the WPMailchimpSync class
+    	$mailchimp_sync = new WPMailchimpSync();
 
 		add_action('admin_menu', array($this, 'wp_mailchimp_sync_add_submenu_page'));
 		add_action('admin_init', array($this, 'page_init'));
@@ -107,26 +114,76 @@ class Wp_Mailchimp_Sync_Admin {
 	 */
 	public function wp_mailchimp_sync_import_display()
 	{
-
-		$this->options = get_option('data_settings_wp_mailchimp_sync');
-?>
-		<div class="settings-wrap">
-			<h1 class="settings-title">Wp Mailchimp Sync Settings</h1>
-			<div class="settings-form-wrap">
-				<form method="post" action="options.php">
-					<?php
-					settings_errors();
-					// This prints out all hidden setting fields
-					settings_fields('data_settings_wp_mailchimp_sync');
-					do_settings_sections('settings_page_wp_mailchimp_sync');
-					submit_button();
-					?>
-				</form>
-			</div>
-		</div>
-<?php
-
-	}
+	    // Retrieve the plugin options from the database
+	    $this->options = get_option('data_settings_wp_mailchimp_sync');
+	?>
+	    <div class="settings-wrap">
+	        <h1 class="settings-title">Wp Mailchimp Sync Settings</h1>
+	        <div class="settings-form-wrap">
+	            <h2 class="nav-tab-wrapper">
+	                <a href="#api-key" class="nav-tab">Enter an API Key</a>
+	                <a href="#import-audiences" class="nav-tab">Import MailChimp "Audiences"</a>
+	                <a href="#user-roles" class="nav-tab">Select which User Roles sync to which Audience</a>
+	                <a href="#automate-sync" class="nav-tab">Automate the sync</a>
+	                <a href="#manual-sync" class="nav-tab">Push a manual sync</a>
+	            </h2>
+	            <form method="post" action="options.php">
+	                <?php
+	                // Display any errors or messages related to the settings
+	                settings_errors();
+	
+	                // Output the hidden setting fields
+	                settings_fields('data_settings_wp_mailchimp_sync');
+	                ?>
+	                <div id="api-key" class="settings-tab">
+	                    <h3>Enter an API Key</h3>
+	                    <?php
+	                    do_settings_sections('settings_page_wp_mailchimp_sync');
+		                // Output the submit button for the form
+		                submit_button('Save Changes', 'primary', 'submit', false, null);                    
+	                    ?>
+	                    <input type="hidden" name="action" value="save_api_key">
+	                </div>
+	                <div id="import-audiences" class="settings-tab">
+	                    <h3>Import MailChimp "Audiences"</h3>
+	                    <?php
+	                    // Additional settings sections and fields for importing audiences
+	                    ?>
+	                    <p>This is the Import Audiences tab.</p>
+	                    <input type="hidden" name="action" value="import_audiences">
+	                </div>
+	                <div id="user-roles" class="settings-tab">
+	                    <h3>Select which User Roles sync to which Audience</h3>
+	                    <?php
+	                    // Additional settings sections and fields for selecting user roles
+	                    ?>
+	                    <p>This is the User Roles tab.</p>
+	                    <input type="hidden" name="action" value="save_user_roles">
+	                </div>
+	                <div id="automate-sync" class="settings-tab">
+	                    <h3>Automate the sync</h3>
+	                    <?php
+	                    // Additional settings sections and fields for automating the sync
+	                    ?>
+	                    <p>This is the Automate Sync tab.</p>
+	                    <input type="hidden" name="action" value="automate_sync">
+	                </div>
+	                <div id="manual-sync" class="settings-tab">
+	                    <h3>Push a manual sync</h3>
+	                    <?php
+	                    // Additional settings sections and fields for manual sync
+	                    ?>
+	                    <p>This is the Manual Sync tab.</p>
+	                    <input type="hidden" name="action" value="manual_sync">
+	                </div>
+	                <?php
+	                ?>
+	            </form>
+	        </div>
+	    </div>
+	
+	<?php
+}
 
 	/**
 	 * Register and add settings
@@ -215,8 +272,8 @@ class Wp_Mailchimp_Sync_Admin {
 	 */
 	public function api_key_callback() {
 		printf(
-			'<input type="text" id="api_key" name="data_settings_wp_mailchimp_sync[api_key]" value="%s" />',
-			isset($this->options['api_key']) ? esc_attr($this->options['api_key']) : ''
+			'<input type="text" id="mailchimp_api_key" name="data_settings_wp_mailchimp_sync[mailchimp_api_key]" value="%s" />',
+			isset($this->options['mailchimp_api_key']) ? esc_attr($this->options['mailchimp_api_key']) : ''
 		);
 	}
 	
@@ -259,9 +316,9 @@ class Wp_Mailchimp_Sync_Admin {
 	 * @access   public 
 	 * 
 	 */
-	public function get_api_key()
-	{
-		return isset($this->options['api_key']) ? $this->options['api_key'] : '';
-	}
+	// public function get_api_key()
+	// {
+	// 	return isset($this->options['api_key']) ? $this->options['api_key'] : '';
+	// }
 
 }
