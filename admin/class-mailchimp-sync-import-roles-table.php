@@ -1,6 +1,7 @@
 <?php
 require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 
+
 class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table
 {
     public function column_default($item, $column_name) {

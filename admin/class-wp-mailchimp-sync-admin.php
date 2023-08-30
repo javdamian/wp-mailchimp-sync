@@ -116,6 +116,7 @@ class Wp_Mailchimp_Sync_Admin
 	 * 
 	 */
 
+	 
 	 public function wp_mailchimp_sync_import_display()
 	 {
 		 $this->options = get_option('data_settings_wp_mailchimp_sync');

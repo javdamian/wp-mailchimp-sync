@@ -1,5 +1,4 @@
 <?php
-
 class MailchimpSyncHandler {
 
     private $mailchimp_api_key;

@@ -8,4 +8,3 @@
  * @subpackage Wp_Mailchimp_Sync/admin/partials
  */
 ?>
-

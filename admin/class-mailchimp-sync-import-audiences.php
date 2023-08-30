@@ -23,6 +23,7 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
                 return '';
         }
     }
+    
 
     public function column_cb($item) {
         // Here you can display a checkbox for each row of the table
