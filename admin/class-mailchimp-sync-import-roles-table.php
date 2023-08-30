@@ -1,14 +1,9 @@
 <?php
 require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
 
-    /**
-     * Define how each column of the table will be displayed.
-     *
-     * @param mixed $item The item being displayed in the table.
-     * @param string $column_name The name of the column being displayed.
-     * @return mixed The value to be displayed in the column.
-     */
+
+class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table
+{
     public function column_default($item, $column_name) {
         // Define how each column of the table will be displayed
         switch ($column_name) {
@@ -23,9 +18,8 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
                 return '';
         }
     }
-    
-
-    public function column_cb($item) {
+    public function column_cb($item)
+    {
         // Here you can display a checkbox for each row of the table
         return sprintf(
             '<input type="checkbox" name="selected_audiences[]" value="%s" />',
@@ -33,7 +27,8 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
         );
     }
 
-    public function get_columns() {
+    public function get_columns()
+    {
         // Define the columns of the table
         $columns = array(
             'cb'            => '<input type="checkbox" />',
@@ -45,7 +40,8 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
         return $columns;
     }
 
-    public function prepare_items() {
+    public function prepare_items()
+    {
         // Get the audience and role data from the options
         $audiences = get_option('mailchimp_sync_import_audiences', array());
         $selected_roles = get_option('mailchimp_sync_selected_roles', array());
@@ -62,34 +58,33 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
         }
     }
 
-    private function get_roles_select($audience_id, $selected_roles) {
+    private function get_roles_select($audience_id, $selected_roles)
+    {
         $wp_roles = wp_roles();
         $roles = $wp_roles->get_names();
-    
-        $checkboxes_html = '';
+
+        $select_html = '<select name="selected_roles[' . $audience_id . '][]" multiple>';
         foreach ($roles as $role => $role_name) {
-            $checked = in_array($role, $selected_roles) ? 'checked' : '';
-            $checkboxes_html .= '<label>';
-            $checkboxes_html .= '<input type="checkbox" name="selected_roles[' . $audience_id . '][]" value="' . $role . '" ' . $checked . '>';
-            $checkboxes_html .= $role_name;
-            $checkboxes_html .= '</label><br>';
+            $selected = in_array($role, $selected_roles) ? 'selected' : '';
+            $select_html .= '<option value="' . $role . '" ' . $selected . '>' . $role_name . '</option>';
         }
-    
-        return $checkboxes_html;
+        $select_html .= '</select>';
+
+        return $select_html;
     }
 }
 
-class Mailchimp_Sync_Import_Audiences {
+class Mailchimp_Sync_Import_Audiences
+{
 
-    private $mailchimp_api_key;
-    private $mailchimp_audience_id;
-
-    public function __construct() {
+    public function __construct()
+    {
         $this->mailchimp_api_key = get_option('data_settings_wp_mailchimp_sync')['mailchimp_api_key'];
         $this->mailchimp_audience_id = get_option('data_settings_wp_mailchimp_sync')['mailchimp_audience_id'];
     }
 
-    public function import() {
+    public function import()
+    {
         // Create an instance of the Mailchimp_Sync_Import_Audiences_Table class
         $table = new Mailchimp_Sync_Import_Audiences_Table();
 
