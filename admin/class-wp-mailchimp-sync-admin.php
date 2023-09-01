@@ -156,6 +156,11 @@ class Wp_Mailchimp_Sync_Admin
                 if (!isset($_POST['import_audiences'])) {
                     $table->prepare_items();
                     $table->display();
+					// Display the button to store all audiences and selected roles
+					echo '<form method="POST" action="">';
+					echo '<input type="hidden" name="store_all_audiences" value="1">';
+					echo '<button class="button button-primary" type="submit">Store All Audiences</button>';
+					echo '</form>';
                 }
 
 			} else {

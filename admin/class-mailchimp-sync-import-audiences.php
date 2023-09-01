@@ -27,7 +27,7 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
             'audience_id'   => 'Audience ID',
             'audience_name' => 'Audience Name',
             'roles'         => 'Roles',
-            'actions'       => 'Actions' // Add a new column for actions
+            /*'actions'       => 'Actions' // Add a new column for actions*/
         );
         return $columns;
     }
@@ -63,14 +63,14 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
 
         return $checkboxes_html;
     }
-    private function get_store_button($audience_id) {
+   /* private function get_store_button($audience_id) {
         $button_html = '<form method="POST" action="">';
         $button_html .= '<input type="hidden" name="store_audiences" value="' . $audience_id . '">';
         $button_html .= '<button class="button button-primary" type="submit">Store</button>';
         $button_html .= '</form>';
 
         return $button_html;
-    }
+    }*/
 }
 
 class Mailchimp_Sync_Import_Audiences {
@@ -120,8 +120,15 @@ class Mailchimp_Sync_Import_Audiences {
 
         // Display the table
         $table->display();
+
+       // Display the button to store all audiences and selected roles
+       echo '<form method="POST" action="">';
+       echo '<input type="hidden" name="save_all_audiences" value="1">';
+       echo '<button class="button button-primary" type="submit">Save All Audiences</button>';
+       echo '</form>';
+
         // Check if the form is submitted to store the audiences and selected roles
-        if (isset($_POST['store_all_audiences'])) {
+        if (isset($_POST['save_all_audiences'])) {
             $selected_roles = $_POST['selected_roles'];
 
             // Update the selected roles for each audience
@@ -139,11 +146,11 @@ class Mailchimp_Sync_Import_Audiences {
             echo 'Audiences and selected roles stored successfully.';
         }
 
-        // Display the button to store all audiences and selected roles
+        /*// Display the button to store all audiences and selected roles
         echo '<form method="POST" action="">';
-        echo '<input type="hidden" name="store_all_audiences" value="1">';
+        echo '<input type="hidden" name="save_all_audiences" value="1">';
         echo '<button class="button button-primary" type="submit">Store All Audiences</button>';
-        echo '</form>';
+        echo '</form>';*/
     }
 
 }
