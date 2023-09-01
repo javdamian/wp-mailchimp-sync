@@ -121,6 +121,7 @@ class Mailchimp_Sync_Import_Audiences {
         // Display the table
         $table->display();
 
+
        // Display the button to store all audiences and selected roles
        echo '<form method="POST" action="">';
        echo '<input type="hidden" name="save_all_audiences" value="1">';
@@ -146,6 +147,7 @@ class Mailchimp_Sync_Import_Audiences {
             echo 'Audiences and selected roles stored successfully.';
         }
 
+        
         /*// Display the button to store all audiences and selected roles
         echo '<form method="POST" action="">';
         echo '<input type="hidden" name="save_all_audiences" value="1">';
