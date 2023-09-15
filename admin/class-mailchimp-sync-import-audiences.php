@@ -63,6 +63,8 @@ class Mailchimp_Sync_Import_Audiences_Table extends WP_List_Table {
 
         return $checkboxes_html;
     }
+
+    
    /* private function get_store_button($audience_id) {
         $button_html = '<form method="POST" action="">';
         $button_html .= '<input type="hidden" name="store_audiences" value="' . $audience_id . '">';
@@ -111,7 +113,6 @@ class Mailchimp_Sync_Import_Audiences {
         // Retrieve saved audiences and selected roles from options
         $saved_audiences = get_option('mailchimp_sync_import_audiences', array());
         $selected_roles = get_option('mailchimp_sync_selected_roles', array());
-
         // Create an instance of the Mailchimp_Sync_Import_Audiences_Table class
         $table = new Mailchimp_Sync_Import_Audiences_Table();
 
@@ -146,8 +147,6 @@ class Mailchimp_Sync_Import_Audiences {
             echo 'Audiences and selected roles stored successfully.';
         }
 
-
-        
         /*// Display the button to store all audiences and selected roles
         echo '<form method="POST" action="">';
         echo '<input type="hidden" name="save_all_audiences" value="1">';
